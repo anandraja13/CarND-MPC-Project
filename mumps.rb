@@ -55,7 +55,8 @@ class Mumps < Formula
   end
 
   def install
-    set_fortran_compiler_linker
+    ENV["FC"] = "gfortran"
+    ENV["FL"] = "gfortran"
     make_args = ["RANLIB=echo"]
     if OS.mac?
       # Building dylibs with mpif90 causes segfaults on 10.8 and 10.10. Use gfortran.
@@ -204,11 +205,6 @@ class Mumps < Formula
       EOS
     end
     s
-  end
-
-  def set_fortran_compiler_linker
-    ENV["FC"] ||= "gfortran"
-    ENV["FL"] ||= "gfortran"
   end
 
   test do
