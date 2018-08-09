@@ -115,7 +115,7 @@ int main() {
           double * ptrx = &waypts_x[0];
           double * ptry = &waypts_y[0];
           Eigen::Map<Eigen::VectorXd> waypts_x_eig(ptrx, 6);
-          Eigen::Map<Eigen::VectorXd> waypts_y_eig(ptrx, 6);
+          Eigen::Map<Eigen::VectorXd> waypts_y_eig(ptry, 6);
 
           auto coeffs = polyfit(waypts_x_eig, waypts_y_eig, 3);
           auto cte    = polyeval(coeffs, 0);
