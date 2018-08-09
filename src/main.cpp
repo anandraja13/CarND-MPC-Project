@@ -118,8 +118,8 @@ int main() {
           }
 
           // Fit a 3rd-degree polynomial
-          Eigen::Map<Eigen::VectorXd> waypoints_xE(&waypoints_x[0], waypoints_x.size());
-          Eigen::Map<Eigen::VectorXd> waypoints_yE(&waypoints_y[0], waypoints_y.size());
+          Eigen::Map<Eigen::VectorXd> waypoints_xE(&waypoints_x[0], 6);
+          Eigen::Map<Eigen::VectorXd> waypoints_yE(&waypoints_y[0], 6);
 
           auto coeffs = polyfit(waypoints_xE, waypoints_yE, 3);
 
