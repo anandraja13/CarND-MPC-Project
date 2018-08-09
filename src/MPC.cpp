@@ -106,7 +106,7 @@ class FG_eval {
       fg[1 + v_start + t]     = v1 - (v0 + a * dt);
       fg[1 + cte_start + t]   = cte1 - ((f0 - y0) + (v0 * CppAD::sin(epsi0) * dt));
       fg[1 + epsi_start + t]  = epsi1 - ((psi0 - psides0) - v0/Lf * delta * dt);
-
+    }
 
   }
 };
@@ -260,3 +260,4 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
   return result;
 }
+
