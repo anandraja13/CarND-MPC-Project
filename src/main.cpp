@@ -114,7 +114,7 @@ int main() {
             auto dy = ptsy[i] - py;
 
             waypoints_x[i] = dx*cos(-psi) - dy*sin(-psi);
-            waypoints_y[i] = dx*sin(-psi) + dy*cos(-psi));
+            waypoints_y[i] = dx*sin(-psi) + dy*cos(-psi);
           }
 
           // Fit a 3rd-degree polynomial
