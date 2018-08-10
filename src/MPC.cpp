@@ -20,7 +20,7 @@ double dt = 0.1;
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf     = 2.67;
-const double ref_v  = 40;
+const double ref_v  = 50;
 
 const double cte_wt   = 2000;
 const double epsi_wt  = 2000;
