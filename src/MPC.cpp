@@ -20,7 +20,7 @@ double dt = 0.1;
 //
 // This is the length from front to CoG that has a similar radius.
 const double Lf     = 2.67;
-const double ref_v  = 50;
+const double ref_v  = 40;
 
 const double cte_wt   = 2000;
 const double epsi_wt  = 2000;
@@ -68,7 +68,7 @@ class FG_eval {
     }
 
     // Sequential effort cost
-    for (int t = 0; t < N - 2; t++) 
+    for (auto t = 0; t < N - 2; t++) 
     {
       fg[0] += del_wt * CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
       fg[0] += a_wt   * CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
@@ -81,45 +81,33 @@ class FG_eval {
     fg[1 + cte_start]   = vars[cte_start];
     fg[1 + epsi_start]  = vars[epsi_start];
 
-    for (int t = 1; t < N; t++) 
-    {
-      AD<double> x1     = vars[x_start + t];
-      AD<double> x0     = vars[x_start + t - 1];
+    for (auto t = 0; t < N-1; t++) 
+    { 
+      AD<double> x0     = vars[x_start + t];
+      AD<double> y0     = vars[y_start + t];
+      AD<double> psi0   = vars[psi_start + t];
+      AD<double> v0     = vars[v_start + t];
+      AD<double> cte0   = vars[cte_start + t];
+      AD<double> epsi0  = vars[epsi_start + t];
 
-      AD<double> y1     = vars[y_start + t];
-      AD<double> y0     = vars[y_start + t - 1];
-      
-      AD<double> psi1   = vars[psi_start + t];
-      AD<double> psi0   = vars[psi_start + t - 1];
-      
-      AD<double> v1     = vars[v_start + t];
-      AD<double> v0     = vars[v_start + t - 1];
-      
-      AD<double> cte1   = vars[cte_start + t];
-      AD<double> cte0   = vars[cte_start + t - 1];
-      
-      AD<double> epsi1  = vars[epsi_start + t];
-      AD<double> epsi0  = vars[epsi_start + t - 1];
-      
-      AD<double> a      = vars[a_start + t - 1];
-      
-      AD<double> delta  = vars[delta_start + t - 1];
-
-      if (t > 1) 
-      {   // use previous actuations (to account for latency)
-        a     = vars[a_start + t - 2];
-        delta = vars[delta_start + t - 2];
-      }
-
-      AD<double> f0       = coeffs[0] + coeffs[1] * x0 + coeffs[2] * CppAD::pow(x0, 2) + coeffs[3] * CppAD::pow(x0, 3);
+      AD<double> a        = vars[a_start + t];
+      AD<double> delta    = vars[delta_start + t];
+      AD<double> f0       = coeffs[0] + (x0 * coeffs[1]) + (CppAD::pow(x0,2) * coeffs[2]) + (CppAD::pow(x0,3)*coeffs[3]);
       AD<double> psides0  = CppAD::atan(coeffs[1] + 2 * coeffs[2] * x0 + 3 * coeffs[3] * CppAD::pow(x0, 2));
 
-      fg[1 + x_start + t]     = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
-      fg[1 + y_start + t]     = y1 - (y0 + v0 * CppAD::sin(psi0) * dt);
-      fg[1 + psi_start + t]   = psi1 - (psi0 - v0/Lf * delta * dt);
-      fg[1 + v_start + t]     = v1 - (v0 + a * dt);
-      fg[1 + cte_start + t]   = cte1 - ((f0 - y0) + (v0 * CppAD::sin(epsi0) * dt));
-      fg[1 + epsi_start + t]  = epsi1 - ((psi0 - psides0) - v0/Lf * delta * dt);
+      AD<double> x1     = vars[x_start + t + 1];
+      AD<double> y1     = vars[y_start + t + 1];
+      AD<double> psi1   = vars[psi_start + t + 1];
+      AD<double> v1     = vars[v_start + t + 1];
+      AD<double> cte1   = vars[cte_start + t + 1];
+      AD<double> epsi1  = vars[epsi_start + t + 1];
+
+      fg[2 + x_start + t]     = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
+      fg[2 + y_start + t]     = y1 - (y0 + v0 * CppAD::sin(psi0) * dt);
+      fg[2 + psi_start + t]   = psi1 - (psi0 - (v0 * delta * dt / Lf));
+      fg[2 + v_start + t]     = v1 - (v0 + a * dt);
+      fg[2 + cte_start + t]   = cte1 - ((f0 - y0) + (v0 * CppAD::sin(epsi0) * dt));
+      fg[2 + epsi_start + t]  = epsi1 - ((psi0 - psides0) - v0/Lf * delta * dt);
     }
 
   }
@@ -253,7 +241,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   ok &= solution.status == CppAD::ipopt::solve_result<Dvector>::success;
 
   // Cost
-  auto cost = solution.obj_value;
+  //auto cost = solution.obj_value;
   //std::cout << "Cost " << cost << std::endl;
 
   // TODO: Return the first actuator values. The variables can be accessed with
@@ -266,10 +254,10 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   result.push_back(solution.x[delta_start]);
   result.push_back(solution.x[a_start]);
 
-  for (int i = 0; i < N-1; i++) 
+  for (auto t = 0; t < N-1; t++) 
   {
-    result.push_back(solution.x[x_start + i + 1]);
-    result.push_back(solution.x[y_start + i + 1]);
+    result.push_back(solution.x[x_start + t + 1]);
+    result.push_back(solution.x[y_start + t + 1]);
   }
 
   return result;

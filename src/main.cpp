@@ -98,8 +98,8 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double steer_value;
-          double throttle_value;
+          double steer_value      = -j[1]["steering_angle"];
+          double throttle_value   = j[1]["throttle"];
 
           vector<double> waypoints_x; 
           vector<double> waypoints_y;
@@ -127,9 +127,19 @@ int main() {
           auto cte    = polyeval(coeffs, 0);
           auto epsi   = -atan(coeffs[1]);
           
+          // Latency
+          auto delay = 0.1; // 0.1 sec latency
+          auto cte1  = cte + (v*sin(epsi)*delay);
+          auto epsi1 = cte + (v*steer_value*delay)/Lf;
+
+          px   = v*cos(0)*delay;
+          py   = v*sin(0)*delay;
+          psi = v*steer_value*delay / Lf;
+          v   = v + throttle_value*delay;
+
           // Specify state vector
           Eigen::VectorXd state(6);
-          state << 0, 0, 0, v, cte, epsi;
+          state << px, py, psi, v, cte1, epsi1;
 
           // Use Model Predictive Control to compute steer and throttle
           auto vars = mpc.Solve(state, coeffs);
