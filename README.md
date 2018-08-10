@@ -20,14 +20,20 @@ The model includes cross track and orientation error, according to the equations
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=e\psi_{t&plus;1}&space;=\psi_t&space;-&space;\psi&space;des_t&space;&plus;&space;\frac{v_t}{Lf}\delta_tdt" target="_blank"><img src="https://latex.codecogs.com/gif.latex?e\psi_{t&plus;1}&space;=\psi_t&space;-&space;\psi&space;des_t&space;&plus;&space;\frac{v_t}{Lf}\delta_tdt" title="e\psi_{t+1} =\psi_t - \psi des_t + \frac{v_t}{Lf}\delta_tdt" /></a>
 
-## Choice of Timestep and Duration
+## Timestep Length and Elapsed Duration
 Selecting the timestep (`dt`) and duration (`N*dt`) is a tradeoff between the computational effort required to solve the MPC optimiztion problem and the length of horizon to account for in the problem. I chose the following parameter set:
 
 ```
 N  = 10;
 dt = 0.1;
 ```
+This leads to a 1 sec horizon taken into account and is a reasonable choice for medium speed environments. A few other choices led to erratic behavior either because the horizon was too short or the computational effort was overwhelming leading to latency having a biggger impact.
 
+## Polynomial fitting and MPC Preprocessing
+The waypoints provided by the simulator are in a global coordinate frame. These are first transformed to the vehicle's frame of reference. Then, a 3rd order polynomial is fit to the waypoints. 
+
+## Model Predictive Control with Latency
+In order to deal with MPC, the future state of the vehicle is predicted using the vehicle kinematic model and used in the MPC optimization. This helped deal with latency. [This](https://discussions.udacity.com/t/how-to-incorporate-latency-into-the-model/257391/93) discussion helped me deal with latency in my project. 
 
 ## Project Setup
 ### Dependencies
