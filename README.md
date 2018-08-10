@@ -20,6 +20,15 @@ The model includes cross track and orientation error, according to the equations
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=e\psi_{t&plus;1}&space;=\psi_t&space;-&space;\psi&space;des_t&space;&plus;&space;\frac{v_t}{Lf}\delta_tdt" target="_blank"><img src="https://latex.codecogs.com/gif.latex?e\psi_{t&plus;1}&space;=\psi_t&space;-&space;\psi&space;des_t&space;&plus;&space;\frac{v_t}{Lf}\delta_tdt" title="e\psi_{t+1} =\psi_t - \psi des_t + \frac{v_t}{Lf}\delta_tdt" /></a>
 
+## Choice of Timestep and Duration
+Selecting the timestep (`dt`) and duration (`N*dt`) is a tradeoff between the computational effort required to solve the MPC optimiztion problem and the length of horizon to account for in the problem. I chose the following parameter set:
+
+```
+N  = 10;
+dt = 0.1;
+```
+
+
 ## Project Setup
 ### Dependencies
 
