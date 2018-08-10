@@ -14,6 +14,12 @@ A kinematic vehicle model with the following update equations was used in this p
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=v_{t&plus;1}&space;=&space;v_t&space;&plus;&space;a_t&space;*&space;dt" target="_blank"><img src="https://latex.codecogs.com/gif.latex?v_{t&plus;1}&space;=&space;v_t&space;&plus;&space;a_t&space;*&space;dt" title="v_{t+1} = v_t + a_t * dt" /></a>
 
+The model includes cross track and orientation error, according to the equations below:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=cte_{t&plus;1}&space;=&space;y_t&space;-&space;f(x_t)&space;&plus;&space;v_tsin(e\psi_t)dt" target="_blank"><img src="https://latex.codecogs.com/gif.latex?cte_{t&plus;1}&space;=&space;y_t&space;-&space;f(x_t)&space;&plus;&space;v_tsin(e\psi_t)dt" title="cte_{t+1} = y_t - f(x_t) + v_tsin(e\psi_t)dt" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=e\psi_{t&plus;1}&space;=\psi_t&space;-&space;\psi&space;des_t&space;&plus;&space;\frac{v_t}{Lf}\delta_tdt" target="_blank"><img src="https://latex.codecogs.com/gif.latex?e\psi_{t&plus;1}&space;=\psi_t&space;-&space;\psi&space;des_t&space;&plus;&space;\frac{v_t}{Lf}\delta_tdt" title="e\psi_{t+1} =\psi_t - \psi des_t + \frac{v_t}{Lf}\delta_tdt" /></a>
+
 ## Project Setup
 ### Dependencies
 
