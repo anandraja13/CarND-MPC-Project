@@ -8,6 +8,12 @@ A kinematic vehicle model with the following update equations was used in this p
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=x_{t&plus;1}&space;=&space;x_t&space;&plus;&space;v_t&space;*&space;dt&space;*&space;cos(\psi_t)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?x_{t&plus;1}&space;=&space;x_t&space;&plus;&space;v_t&space;*&space;dt&space;*&space;cos(\psi_t)" title="x_{t+1} = x_t + v_t * dt * cos(\psi_t)" /></a>
 
+<a href="https://www.codecogs.com/eqnedit.php?latex=y_{t&plus;1}&space;=&space;y_t&space;&plus;&space;v_t&space;*&space;dt&space;*&space;sin(\psi_t)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?y_{t&plus;1}&space;=&space;y_t&space;&plus;&space;v_t&space;*&space;dt&space;*&space;sin(\psi_t)" title="y_{t+1} = y_t + v_t * dt * sin(\psi_t)" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\psi_{t&plus;1}&space;=&space;\psi_t&space;&plus;&space;\frac{v_t}{L_f}&space;*&space;dt&space;*&space;\delta_t" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\psi_{t&plus;1}&space;=&space;\psi_t&space;&plus;&space;\frac{v_t}{L_f}&space;*&space;dt&space;*&space;\delta_t" title="\psi_{t+1} = \psi_t + \frac{v_t}{L_f} * dt * \delta_t" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=v_{t&plus;1}&space;=&space;v_t&space;&plus;&space;a_t&space;*&space;dt" target="_blank"><img src="https://latex.codecogs.com/gif.latex?v_{t&plus;1}&space;=&space;v_t&space;&plus;&space;a_t&space;*&space;dt" title="v_{t+1} = v_t + a_t * dt" /></a>
+
 ## Project Setup
 ### Dependencies
 
