@@ -132,11 +132,11 @@ int main() {
           // Latency
           auto delay = 0.1; // 0.1 sec latency
           auto cte1  = cte + (v*sin(epsi)*delay);
-          auto epsi1 = epsi + (v*(-1.0)*steer_value*delay)/Lf;
+          auto epsi1 = epsi + (v*steer_value*delay)/Lf;
 
           px   = v*cos(0)*delay;
           py   = v*sin(0)*delay;
-          psi  = v*(-1)*steer_value*delay / Lf;
+          psi  = v*steer_value*delay / Lf;
           v    = v + throttle_value*delay;
 
           // Specify state vector
@@ -146,13 +146,13 @@ int main() {
           // Use Model Predictive Control to compute steer and throttle
           auto vars = mpc.Solve(state, coeffs);
 
-          steer_value     = vars[0];
+          steer_value     = vars[0] / (deg2rad(25)*Lf);
           throttle_value  = vars[1];
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
           // Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
-          msgJson["steering_angle"] = steer_value / deg2rad(25);
+          msgJson["steering_angle"] = steer_value;
           msgJson["throttle"]       = throttle_value;
 
           // Display the MPC predicted trajectory 
