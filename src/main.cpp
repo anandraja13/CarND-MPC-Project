@@ -132,12 +132,12 @@ int main() {
           // Latency
           auto delay = 0.1; // 0.1 sec latency
           auto cte1  = cte + (v*sin(epsi)*delay);
-          auto epsi1 = cte + (v*steer_value*delay)/Lf;
+          auto epsi1 = epsi + (-v*steer_value*delay)/Lf;
 
           px   = v*cos(0)*delay;
           py   = v*sin(0)*delay;
-          psi = v*steer_value*delay / Lf;
-          v   = v + throttle_value*delay;
+          psi  = -v*steer_value*delay / Lf;
+          v    = v + throttle_value*delay;
 
           // Specify state vector
           Eigen::VectorXd state(6);
