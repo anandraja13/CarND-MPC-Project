@@ -98,7 +98,9 @@ int main() {
           * Both are in between [-1, 1].
           *
           */
-          double steer_value      = -j[1]["steering_angle"];
+          const double Lf = 2.67;
+
+          double steer_value      = -(j[1]["steering_angle"]);
           double throttle_value   = j[1]["throttle"];
 
           vector<double> waypoints_x; 
